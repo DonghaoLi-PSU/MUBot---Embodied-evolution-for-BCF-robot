@@ -1,0 +1,16 @@
+mubot: #namespace
+        
+        # PGPE Parameters
+
+        n_rollout:  50         # Number of rollouts per episode
+        n_episodes: 20        # Number of episodes
+
+        # Robot Environment Parameters
+        max_distance: 20.0 # Maximum distance allowed for swimming
+        max_sim_time: 6.1
+        select: 15
+
+#        lr: [30,30,30,     30,30,30,     30,30,30,        30,     30]                # Learning Rates
+#        lr: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+#        n_params: 11            # Number of weights
+
