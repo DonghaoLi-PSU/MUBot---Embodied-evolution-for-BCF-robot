@@ -9,7 +9,6 @@ import random, os, time, sys, shutil
 from pathlib import Path
 import threading, re
 
-# ── Rich (optional) ───────────────────────────────────────────────────────────
 try:
     from rich.console import Console
     from rich.live import Live

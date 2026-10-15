@@ -1,8 +1,7 @@
 /*
- * Actuator Plugin (STRICT joint matching + no duplicates)
+ * Actuator Plugin 
  *
  * - joint_param.csv is loaded ONCE in Load()
- * Also fixes: vel[] was never set in your original code.
  */
 
 #ifndef __GAZEBO_ACTUATOR_PLUGIN_STRICT_HH__
