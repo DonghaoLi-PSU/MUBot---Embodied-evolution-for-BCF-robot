@@ -1,7 +1,6 @@
 /* Hydrodynamics Force Plugin for MUBot Evolution 
  *
  * Created by Donghao Li on March 12th 2026
- *  
  */
 
 #ifndef __GAZEBO_HYDRO_PLUGIN_STRICT_HH__
