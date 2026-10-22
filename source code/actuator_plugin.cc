@@ -1,7 +1,7 @@
 /*
  * Actuator Plugin 
  *
- * - joint_param.csv is loaded ONCE in Load()
+ * Created by Donghao Li on March 12th 2026
  */
 
 #ifndef __GAZEBO_ACTUATOR_PLUGIN_STRICT_HH__
@@ -27,8 +27,6 @@
 #include <algorithm>
 
 namespace {
-    // --------- small utilities ----------
-    // Trim space in a string (both ends)
 
     constexpr double Pi = 3.1415926;
     constexpr double max_power = 100.0;  // in voltage units; adjust as needed
@@ -164,18 +162,14 @@ namespace gazebo {
                 }
             }
 
-            // Derive model_id (guard substr)
             const std::string model_name = model_->GetName();
             const std::string model_id = (model_name.size() > 6) ? model_name.substr(6) : model_name;
             path_ = ros::package::getPath("des_mubot") + "/Database/" + model_id;
 
-            // STRICT: load joint_param.csv and enforce 1-by-1 order/name match
             Load_Joint_Params(path_ + "/joint_param.csv");
 
-            // STRICT: load control_signal.csv
             Load_Control_Signal(path_ + "/control_signal.csv");
 
-            // Connect update
             updateConnection_ = event::Events::ConnectWorldUpdateBegin(
             boost::bind(&ActuatorPlugin::OnUpdate, this));
 
@@ -233,7 +227,6 @@ namespace gazebo {
                 const std::string stripped = Trim(line);
                 if (stripped.empty()) continue;
                 const auto c = Split_CSV(stripped);
-                // Pandas to_csv(header=False) with index gives 1 name + 3 values => 4 columns
                 if (c.size() != 4) {
                     throw std::runtime_error("[Actuator] CSV format error: joint_param.csv expects exactly 4 columns "
                                             "(name, ac_param, sf_param, stiff_ratio). Got " +
@@ -257,7 +250,7 @@ namespace gazebo {
                 csv_names.push_back(name);      csv_params.push_back(p);
             }
 
-            // STRICT: row count must match joint count exactly
+            // row count must match joint count exactly
             if (csv_names.size() != joints_.size()) {
             throw std::runtime_error("[Actuator] CSV/URDF mismatch: joint_param.csv rows = " +
                                     std::to_string(csv_names.size()) +
@@ -265,7 +258,7 @@ namespace gazebo {
                                     ". They must match exactly.");
             }
 
-            // STRICT: 1-by-1 order + exact name match
+            // 1-by-1 order + exact name match
             for (size_t i = 0; i < joints_.size(); ++i) {
                 const std::string jt_name = joints_[i]->GetName();
                 const std::string csv_name = csv_names[i];
@@ -317,7 +310,6 @@ namespace gazebo {
                 raw[i] = Parse_Double(c[i], 1, static_cast<int>(i));
             }
 
-            // Keep your original packing:
             // amp[0] = abs(raw[0]); phase[0] = 0;
             // for i>=1: amp[i] = abs(raw[2*i-1]); phase[i] = raw[2*i];
             // frequency = raw[2*N - 1]
@@ -447,7 +439,6 @@ namespace gazebo {
         }
 
         private:
-        // Gazebo joint and link pointers (cached for efficiency; assumes model structure does not change at runtime)
         std::vector<physics::JointPtr> joints_;
         std::vector<physics::LinkPtr> links_;
         physics::ModelPtr model_;

@@ -180,8 +180,7 @@ class MubotEnv():
             logging.getLogger(name).setLevel(logging.CRITICAL)
 
     def _redirect_stdout(self):
-        """Redirect fd-level stdout/stderr to /dev/null.
-        Catches output that bypasses Python logging (roslaunch C internals)."""
+        """Redirect fd-level stdout/stderr to /dev/null."""
         self._devnull_fd = open(os.devnull, 'w')
         self._saved_stdout_fd = os.dup(1)   # save real stdout fd
         self._saved_stderr_fd = os.dup(2)   # save real stderr fd
@@ -207,7 +206,7 @@ class MubotEnv():
             try:
                 return os.path.getmtime(path)
             except FileNotFoundError:
-                return 0.0  # already deleted by another worker — treat as oldest
+                return 0.0
 
         dirs = sorted(glob.glob(log_dir + "*/"), key=safe_getmtime)
 
@@ -215,7 +214,7 @@ class MubotEnv():
             try:
                 shutil.rmtree(old_dir)
             except FileNotFoundError:
-                pass  # another worker already cleaned it
+                pass 
             except Exception as e:
                 rospy.logwarn(f"[Worker {self.wk_id}] Could not remove log dir {old_dir}: {e}")
 

@@ -160,7 +160,7 @@ class MUBot_morph:
         """
         joint = [joint for joint in self.root.findall('joint') if joint[1].attrib['link']==temp_parent and joint[2].attrib['link'][:3] != 'fin']
         p_dep = xml.read_size(self.seg_dict[temp_parent])[2]
-        if len(joint)==0: # temp_parent don't have child, no need to adjust joint
+        if len(joint)==0: 
             c_dep = np.NaN
             re_idc = False
         else:
